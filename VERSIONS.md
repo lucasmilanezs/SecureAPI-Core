@@ -2,8 +2,9 @@
 
 ## v0.1 - Functional Core
 - [x] Project structure
-- [x] Basic CRUD
-- [x] SQLite integration
+- [x] SQLalchemy models
+- [ ] Basic CRUD
+
 
 ## v0.2 - Authentication & Security
 - [ ] JWT Login

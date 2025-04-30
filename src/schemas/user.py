@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 from typing import Optional
 
 class UserBase(BaseModel):
@@ -6,17 +6,21 @@ class UserBase(BaseModel):
     role: str = Field(..., description="Users role identifier")
 
 class UserCreate(UserBase):
-    password_hash: str = Field(..., description="Hashed password of user")
+    password: str = Field(..., description="Password of user", repr=False)
 
 class UserUpdate(BaseModel):
     id: int = Field(None, description="Unique user identifier")
     username: Optional[str] = Field(None, description="Unique username")
-    password_hash: Optional[str] = Field(None, description="Hashed password of user")
+
+class RoleResponse(BaseModel):
+    id: int
+    name: str
+
+    model_config = ConfigDict(from_attributes=True)
 
 class UserResponse(BaseModel):
     id: int
     username: str
-    role: str
+    role: RoleResponse
 
-    class Config:
-        orm_mode=True
+    model_config = ConfigDict(from_attributes=True)

@@ -3,6 +3,7 @@ from sqlalchemy.orm import declarative_base, sessionmaker
 import os
 from dotenv import load_dotenv
 
+#Conn and session config
 load_dotenv()
 
 DATABASE_URL = os.getenv("DATABASE_URL")
@@ -15,6 +16,7 @@ engine = create_engine(
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
+# Session factory dependency
 def get_db():
     db = SessionLocal()
     try:

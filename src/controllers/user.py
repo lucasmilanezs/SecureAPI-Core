@@ -4,7 +4,7 @@ from sqlalchemy.exc import NoResultFound
 from typing import List
 
 from src.schemas.user import UserCreate, UserResponse, UserUpdate
-from src.services.user import create_user, get_user_list, update_user
+from src.services.user import create_user, get_user_list, update_user, delete_user
 
 def handle_create_user(user_data: UserCreate, db: Session) -> UserResponse:
     user = create_user(db, user_data)
@@ -18,6 +18,16 @@ def handle_update_user(db: Session, user_id: int, new_user_data: UserUpdate) -> 
     try:
         updated_user = update_user(db, user_id, new_user_data)  
         return UserResponse.model_validate(updated_user)
+    except NoResultFound:
+        raise HTTPException(
+            status_code=404,
+            detail="User not found"
+        )
+    
+def handle_delete_user(db: Session, user_id: int) -> dict:
+    try:
+        delete_user(db, user_id)
+        return {"detail": "User deleted successfully"}
     except NoResultFound:
         raise HTTPException(
             status_code=404,

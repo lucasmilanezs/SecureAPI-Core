@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from typing import List
 
-from src.controllers.user import handle_create_user, handle_get_user_list, handle_update_user
+from src.controllers.user import handle_create_user, handle_get_user_list, handle_update_user, handle_delete_user
 from src.database import get_db
 from src.schemas.user import UserCreate, UserResponse, UserUpdate
 
@@ -26,3 +26,7 @@ def put_user(
     db: Session = Depends(get_db)
 ):
     return handle_update_user(db, user_id, new_user_data)
+
+@router.delete("/", status_code=204)
+def delete_user(user_id: int, db: Session = Depends(get_db)):
+    handle_delete_user(db, user_id)

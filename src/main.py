@@ -3,7 +3,7 @@ from src.routes import user
 
 app = FastAPI()
 
-@app.get("/health")
+@app.get("/")
 def health_check():
     return {"status": "ok"}
 

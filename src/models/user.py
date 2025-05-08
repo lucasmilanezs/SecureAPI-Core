@@ -16,4 +16,5 @@ class User(Base):
     username = Column(String, unique=True)
     password_hash = Column(String)
     role_id = Column(Integer, ForeignKey("roles.id"))
+    is_deleted = Column(Boolean, default=False)
     role = relationship("Role", back_populates="users")

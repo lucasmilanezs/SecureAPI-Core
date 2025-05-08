@@ -73,3 +73,23 @@ def update_user(db: Session, user_id: int, new_user_data: UserUpdate) -> User:
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Unexpected error while updating user"
         )
+    
+def delete_user(db: Session, user_id: int) -> None:
+    user = get_object_by_id(db, User, user_id)
+    if user.is_deleted:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="User is already deleted"
+        )
+    user.is_deleted = True
+    try: 
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Unexpected error while deleting user"
+        )
+
+
+

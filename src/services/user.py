@@ -6,7 +6,7 @@ from typing import List
 from src.models.user import User
 from src.schemas.user import UserCreate, UserUpdate
 from src.utils.security import hash_password
-from src.utils.db_helpers import get_role_by_name, get_object_by_id
+from src.utils.db_helpers import get_role_by_name, get_object_by_any
 
 
 
@@ -53,7 +53,7 @@ def get_user_list(db: Session) -> List[User]:
     return db.query(User).all()
 
 def update_user(db: Session, user_id: int, new_user_data: UserUpdate) -> User:
-    user = get_object_by_id(db, User, user_id)
+    user = get_object_by_any(db, User, "id",user_id)
     if new_user_data.username is not None:
         existing_user = db.query(User).filter(User.username == new_user_data.username).first()
         if existing_user and existing_user.id != user.id:
@@ -75,11 +75,11 @@ def update_user(db: Session, user_id: int, new_user_data: UserUpdate) -> User:
         )
     
 def delete_user(db: Session, user_id: int) -> None:
-    user = get_object_by_id(db, User, user_id)
+    user = get_object_by_any(db, User, "id", user_id)
     if user.is_deleted:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="User is already deleted"
+            detail="User not found"
         )
     user.is_deleted = True
     try: 

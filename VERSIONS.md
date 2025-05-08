@@ -6,7 +6,7 @@
 - [x] Basic CRUD
 
 ## v0.2 - Authentication & Security
-- [ ] JWT Login
+- [x] JWT Login
 - [ ] RBAC Middleware
 - [x] Password hashing
 

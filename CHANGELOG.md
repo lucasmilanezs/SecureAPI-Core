@@ -24,9 +24,20 @@
 - PUT/user/{id} endpoint logic
 - Object finder by id function in utils/db_helpers.py
 
-## [v0.0.5] - 08/05/2025
+## [v0.1.0] - 08/05/2025
 ### Added
 - Endpoint `DELETE /user/{user_id}` implementing soft delete logic via `is_deleted` flag.
 - Row-Level Security (RLS) policy on `users` table to restrict access to rows where `is_deleted = false`, applied via Alembic migration.
 ### Changed
 - `User` ORM model updated: added `is_deleted: bool` column to support soft delete.
+
+## [v0.1.1] - 08/05/2025
+### Added
+- POST /auth/login endpoint with JWT authentication.
+- Token generation and password verification in utils/security.py.
+- Custom exceptions (AuthenticationError, ResourceNotFound, etc.) in exceptions.py.
+- get_current_user dependency using HTTPBearer for token validation.
+
+## Changed
+- db_helpers centralized in "get_object_by_any".
+- GET/users now is protected by JWT verification.
